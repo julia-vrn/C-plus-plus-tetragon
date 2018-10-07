@@ -11,8 +11,8 @@ struct Point{
 };
 
 float distance(Point a, Point b);
-float area(Point pArr[]);
-float perimeter(Point pArr[]);
+float area(Point pArr[], int l);
+float perimeter(Point pArr[], int l);
 void writeFile (Point pArr[], float &per, float &area);
 
 int main()
@@ -41,42 +41,53 @@ int main()
     testArr[3].x = 5;
     testArr[3].y = 3;
 
-   float p = perimeter(pArray);
-   float a = area(pArray);
-    writeFile(pArray, p, a);
 
-   float testP = perimeter(testArr);
-   float testA = area(testArr);
+
+   int len = sizeof(pArray)/sizeof (pArray[0]);
+   float a = area(pArray, len);
+   float p = perimeter(pArray, len);
+   writeFile(pArray, p, a);
+
+   int lenT = sizeof(testArr)/sizeof (testArr[0]);
+   float testP = perimeter(testArr, lenT);
+   float testA = area(testArr, lenT);
    writeFile(testArr, testP, testA);
-
-
-
-    return 0;
+   return 0;
 }
 
 
 float distance(Point a, Point b){
-
     float dis = sqrt(pow((b.x-a.x), 2)+pow((b.y-a.y), 2));
-
-    //cout << "The distance between target points is " << dis << ";" << endl;
     return dis;
 }
 
-float perimeter(Point pArr[]){
-    float per = distance(pArr[0],pArr[1])+distance(pArr[1], pArr[2])+distance(pArr[2], pArr[3])+distance(pArr[3], pArr[0]);
+
+float perimeter(Point pArr[], int l){
+    float per = 0;
+    int i = 0;
+    while(i<l-1){
+        per = per + distance(pArr[i], pArr[i+1]);
+        i++;
+    }
+    per = per + distance(pArr[i], pArr[0]);
     cout<<"The perimeter of the tetragon is " << per << ";" << endl;
     return per;
 }
 
-float area(Point pArr[]){
-    float area = abs(0.5*((pArr[0].x*pArr[1].y-pArr[1].x*pArr[0].y)+(pArr[1].x*pArr[2].y-pArr[2].x*pArr[1].y)+(pArr[2].x*pArr[3].y-pArr[3].x*pArr[2].y)+
-            (pArr[3].x*pArr[0].y-pArr[0].x*pArr[3].y)));
+float area(Point pArr[], int l){
+    /*float area = abs(0.5*((pArr[0].x*pArr[1].y-pArr[1].x*pArr[0].y)+(pArr[1].x*pArr[2].y-pArr[2].x*pArr[1].y)+(pArr[2].x*pArr[3].y-pArr[3].x*pArr[2].y)+
+            (pArr[3].x*pArr[0].y-pArr[0].x*pArr[3].y)));*/
+    int i = 0;
+    float area = 0;
+    while(i<l-1){
+        area = area + (pArr[i].x*pArr[i+1].y-pArr[i+1].x*pArr[i].y);
+        cout<<"Debug "<<area<<endl;
+        i++;
+    }
+    area = abs(0.5*(area + (pArr[i].x*pArr[0].y-pArr[0].x*pArr[i].y)));
     cout << "The total area of the tatragon is " << area << ";" << endl;
     return area;
 }
-
-
 
 void writeFile (Point pArr[], float &per, float &area){
     QFile resFile ("result.txt");
