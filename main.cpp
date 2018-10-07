@@ -81,7 +81,6 @@ float area(Point pArr[], int l){
     float area = 0;
     while(i<l-1){
         area = area + (pArr[i].x*pArr[i+1].y-pArr[i+1].x*pArr[i].y);
-        cout<<"Debug "<<area<<endl;
         i++;
     }
     area = abs(0.5*(area + (pArr[i].x*pArr[0].y-pArr[0].x*pArr[i].y)));
